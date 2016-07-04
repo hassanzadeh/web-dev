@@ -5,3 +5,4 @@ https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ba
 https://www.digitalocean.com/community/tutorials/how-to-install-the-bind-dns-server-on-centos-6
 https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7
 http://www.tldp.org/HOWTO/DNS-HOWTO-6.html
+https://www.unixmen.com/configuring-sendmail-smtp-server-on-centos-a-scientific-linux
