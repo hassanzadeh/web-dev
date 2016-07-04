@@ -51,10 +51,10 @@ def sendMail(to,sub,body):
 
 
 
-with open('found.txt','r') as f:
+with open('/home/hamidreza/web-dev/craigslist/found.txt','r') as f:
 	found = [x.strip() for x in f.readlines()]
 
-with open('requests.txt','r') as f:
+with open('/home/hamidreza/web-dev/craigslist/requests.txt','r') as f:
 	for line in f:
 		line = line.strip()
 		columns = line.split()
@@ -68,11 +68,11 @@ with open('requests.txt','r') as f:
 
 		for entry in entries:
 			price,time,title,id,href = parse(entry)
-			if (id not in found):
+			if (id+':'+time not in found):
 				print ('New found '+id)
-				with open("found.txt", "a") as myfile:
-				    myfile.write(id+"\n")
-				msg ="Hello,\nA New item has been found at: "+href+"\nThank you!\n";
+				with open("/home/hamidreza/web-dev/craigslist/found.txt", "a") as myfile:
+				    myfile.write(id+':'+time+"\n")
+				msg ="Hello,\nA new item has been found at: "+href+"\nThank you!\n";
 				sub='CRG:#'+title+" "+price
 				sendMail(email,sub,msg)
 
