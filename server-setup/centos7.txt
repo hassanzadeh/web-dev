@@ -1,4 +1,7 @@
+https://www.digitalocean.com/community/tutorials/initial-server-setup-with-centos-7
+https://www.digitalocean.com/community/tutorials/additional-recommended-steps-for-new-centos-7-servers
 https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-on-centos-7
 https://www.digitalocean.com/community/tutorials/how-to-protect-ssh-with-fail2ban-on-centos-7
 https://www.digitalocean.com/community/tutorials/how-to-install-the-bind-dns-server-on-centos-6
 https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7
+http://www.tldp.org/HOWTO/DNS-HOWTO-6.html
