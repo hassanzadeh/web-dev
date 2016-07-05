@@ -469,5 +469,5 @@ if __name__ == "__main__":
 
 	
 	np.savetxt('/home/hamidreza/web-dev/craigslist/verified_proxies.txt',validated,'%s')
-	mylib.sendMail('ha.hassanzadeh@gmail.com','Proxy list updated',"Hello\nThe proxy list update.\nThank you.\n")
+	mylib.sendMail('ha.hassanzadeh@gmail.com','Proxy list updated',"Hello\nThe proxy list updated.\nNumber of proxies found: "+str(len(validated))+".\nThank you.\n")
 	print "Done"

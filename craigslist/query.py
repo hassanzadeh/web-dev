@@ -75,7 +75,8 @@ with open('/home/hamidreza/web-dev/craigslist/requests.txt','r') as f:
 					mylib.sendMail(email,sub,msg)
 
 		except:
-			print ('Exception occured!')
+			1;
+			#print ('Exception occured!')
 			continue
 
 
