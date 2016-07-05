@@ -1,10 +1,12 @@
 import requests
+import sys
 import random
 from datetime import datetime
 from dateutil import parser as dtparser
 import smtplib
 import os
 from bs4 import BeautifulSoup as bs4
+import mylib
 
 
 def parse (entry):
@@ -39,20 +41,13 @@ def parse (entry):
 
 	return price,time,title,id,href
 
-def sendMail(to,sub,body):
-    sendmail_location = "/usr/sbin/sendmail" # sendmail location
-    p = os.popen("%s -t" % sendmail_location, "w")
-    p.write("From: %s\n" % "noreply@hasanzadeh.com")
-    p.write("To: %s\n" % to)
-    p.write("Subject: "+sub+"\n")
-    p.write("\n") # blank line separating headers from body
-    p.write(body)
-    status = p.close()
-
 with open('/home/hamidreza/web-dev/craigslist/found.txt','r') as f:
 	found = [x.strip() for x in f.readlines()]
 with open('/home/hamidreza/web-dev/craigslist/verified_proxies.txt','r') as f:
 	proxies= [x.strip() for x in f.readlines()]
+
+if (len(proxies)<15):
+	sys.exit('Error number of proxies is small!')
 
 with open('/home/hamidreza/web-dev/craigslist/requests.txt','r') as f:
 	for line in f:
@@ -76,7 +71,7 @@ with open('/home/hamidreza/web-dev/craigslist/requests.txt','r') as f:
 				    myfile.write(id+':'+time+"\n")
 				msg ="Hello,\nA new item has been found at: "+href+"\nThank you!\n";
 				sub='CRG:#'+title+" "+price
-				sendMail(email,sub,msg)
+				mylib.sendMail(email,sub,msg)
 
 
 

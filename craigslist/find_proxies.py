@@ -1,4 +1,5 @@
 import requests
+import mylib
 import numpy as np
 from datetime import datetime
 from dateutil import parser as dtparser
@@ -353,6 +354,8 @@ def aliveproxy():
 class Proxy:
 	def __init__ (self,proxy_file):
 		self.proxies = self.get_proxies(proxy_file)
+		print ('Warning !!!!!!!!!!!!!! limited to 100')
+		self.proxies = self.proxies[:10]
 		self.headers = {'user-agent': 'my-app/0.0.1'}
 		return
 
@@ -365,7 +368,7 @@ class Proxy:
 		return proxies
 
 
-	def try_proxies(self, timeout=5):
+	def try_proxies(self, timeout=8):
 		# return html of url using a random proxy from the list
 		validated=[]
 		for i in range(0,len(self.proxies)):
@@ -461,15 +464,12 @@ if __name__ == "__main__":
 		print "Could not scrape any proxies!"
 
 
-	raw_input("\nPress any key to exit...")
-	sys.exit()
-
-
 	p=Proxy('/home/hamidreza/web-dev/craigslist/proxylist.txt')
 	validated = p.try_proxies()
 
-	print ('Number of valid addresses: ' + len(validated))
+	print ('Number of valid addresses: ' + str(len(validated)))
 
 	
 	np.savetxt('/home/hamidreza/web-dev/craigslist/verified_proxies.txt',validated,'%s')
+	sendMail('ha.hassanzadeh@gmail.com','Proxy list updated',"Hello\nThe proxy list update.\nThank you.\n")
 	print "Done"
