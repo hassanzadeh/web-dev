@@ -366,13 +366,14 @@ class Proxy:
 		return proxies
 
 
-	def try_proxies(self, timeout=8):
+	def try_proxies(self, timeout=15):
 		# return html of url using a random proxy from the list
 		validated=[]
 		for i in range(0,len(self.proxies)):
 			proxy = self.proxies[i]
 			try:
-				rsp= requests.get('http://atlanta.craigslist.org/search/sso?query=gtx', headers=self.headers, proxies={'http': 'http://' + proxy, 'https': 'http://' + proxy},   	timeout=timeout	)
+				rsp= requests.get('http://atlanta.craigslist.org/search/sso?query=gtx', headers=self.headers, proxies={'http': 'http://' + proxy, 'https': 'https://' + proxy},   	timeout=timeout	)
+				#rsp= requests.get('http://atlanta.craigslist.org/search/sso?query=gtx', headers=self.headers, proxies={'http': 'http://' + proxy},   	timeout=timeout	)
 				html = bs4(rsp.text, 'html.parser')
 				entries= html.find_all('p', attrs={'class': 'row'})
 				if (len(entries)>0):

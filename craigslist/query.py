@@ -33,7 +33,8 @@ def parse (entry):
 	else:
 		href=""
 	if (href.startswith ('//')):
-		href= 'http:' + href
+		#href= 'http:' + href
+		href= ''
 	else:
 		href = 'http://atlanta.craigslist.org' + href
 
@@ -58,14 +59,19 @@ with open('/home/hamidreza/web-dev/craigslist/requests.txt','r') as f:
 		email= columns[1]
 
 		proxy =random.choice(proxies)
-		timeout=3
+		timeout=20
 
 		try:
-			rsp = requests.get(url,headers={'user-agent': 'my-app/0.0.1'},proxies={'http': 'http://' + proxy, 'https': 'http://' + proxy}, timeout=timeout)
+			#rsp = requests.get(url,headers={"content-type":"text"},proxies={'http': 'http://' + proxy}, timeout=timeout)
+			rsp = requests.get(url,headers={"content-type":"text"},proxies={'http': 'http://' + proxy,'https': 'https://' + proxy}, timeout=timeout)
+			#rsp = requests.get(url,headers={"content-type":"text"},proxies={'http': 'http://' + proxy} )
+			#rsp = requests.get(url,proxies={'http': 'http://' + proxy}, timeout=timeout)
 			html = bs4(rsp.text, 'html.parser')
 			entries= html.find_all('p', attrs={'class': 'row'})
 			for entry in entries:
 				price,time,title,id,href = parse(entry)
+				if (href == ''):
+					continue
 				if (id+':'+time not in found):
 					print ('New found '+id)
 					with open("/home/hamidreza/web-dev/craigslist/found.txt", "a") as myfile:
@@ -73,10 +79,11 @@ with open('/home/hamidreza/web-dev/craigslist/requests.txt','r') as f:
 					msg ="Hello,\nA new item has been found at: "+href+"\nThank you!\n";
 					sub='CRG:#'+title+" "+price
 					mylib.sendMail(email,sub,msg)
+			#print ('Success'+proxy)
 
 		except:
 			1;
-			#print ('Exception occured!')
+			#print ('Exception occured! '+proxy)
 			continue
 
 
