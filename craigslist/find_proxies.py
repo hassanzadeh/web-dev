@@ -354,8 +354,6 @@ def aliveproxy():
 class Proxy:
 	def __init__ (self,proxy_file):
 		self.proxies = self.get_proxies(proxy_file)
-		print ('Warning !!!!!!!!!!!!!! limited to 100')
-		self.proxies = self.proxies[:10]
 		self.headers = {'user-agent': 'my-app/0.0.1'}
 		return
 
@@ -471,5 +469,5 @@ if __name__ == "__main__":
 
 	
 	np.savetxt('/home/hamidreza/web-dev/craigslist/verified_proxies.txt',validated,'%s')
-	sendMail('ha.hassanzadeh@gmail.com','Proxy list updated',"Hello\nThe proxy list update.\nThank you.\n")
+	mylib.sendMail('ha.hassanzadeh@gmail.com','Proxy list updated',"Hello\nThe proxy list update.\nThank you.\n")
 	print "Done"
