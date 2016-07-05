@@ -1,11 +1,11 @@
 import requests
+import random
 from datetime import datetime
 from dateutil import parser as dtparser
 import smtplib
 import os
-
-
 from bs4 import BeautifulSoup as bs4
+
 
 def parse (entry):
 	price = entry.find('span',attrs={'class': 'price'})
@@ -49,10 +49,10 @@ def sendMail(to,sub,body):
     p.write(body)
     status = p.close()
 
-
-
 with open('/home/hamidreza/web-dev/craigslist/found.txt','r') as f:
 	found = [x.strip() for x in f.readlines()]
+with open('/home/hamidreza/web-dev/craigslist/verified_proxies.txt','r') as f:
+	proxies= [x.strip() for x in f.readlines()]
 
 with open('/home/hamidreza/web-dev/craigslist/requests.txt','r') as f:
 	for line in f:
@@ -61,8 +61,10 @@ with open('/home/hamidreza/web-dev/craigslist/requests.txt','r') as f:
 		url = columns[0]
 		email= columns[1]
 
+		proxy =random.choice(proxies)
+		timeout=10
 
-		rsp = requests.get(url)
+		rsp = requests.get(url,headers={'user-agent': 'my-app/0.0.1'},proxies={'http': 'http://' + proxy, 'https': 'http://' + proxy}, timeout=timeout)
 		html = bs4(rsp.text, 'html.parser')
 		entries= html.find_all('p', attrs={'class': 'row'})
 
