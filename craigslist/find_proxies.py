@@ -7,15 +7,18 @@ import smtplib
 import os
 from bs4 import BeautifulSoup as bs4
 import urllib, urllib2
-import time, datetime
+import time
 import threading, Queue
 import re
 import StringIO, gzip
 import sys
+import random
 
 
 debug = False
 
+r = random.randint(1,6200)
+time.sleep(r)
 
 
 def bug(line):

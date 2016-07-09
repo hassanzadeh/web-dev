@@ -43,11 +43,34 @@ def parse (entry):
 
 	return price,time,title,id,href
 
+def query(url,proxy,email,timeout=20):
+	#rsp = requests.get(url,headers={"content-type":"text"},proxies={'http': 'http://' + proxy}, timeout=timeout)
+	rsp = requests.get(url,headers={"content-type":"text"},proxies={'http': 'http://' + proxy,'https': 'https://' + proxy}, timeout=timeout)
+	#rsp = requests.get(url,headers={"content-type":"text"},proxies={'http': 'http://' + proxy} )
+	#rsp = requests.get(url,proxies={'http': 'http://' + proxy}, timeout=timeout)
+	html = bs4(rsp.text, 'html.parser')
+	entries= html.find_all('p', attrs={'class': 'row'})
+	for entry in entries:
+		price,time,title,id,href = parse(entry)
+		if (href == ''):
+			continue
+		if (id+':'+time not in found):
+			print ('New found '+id)
+			with open("/home/hamidreza/web-dev/craigslist/found.txt", "a") as myfile:
+			    myfile.write(id+':'+time+"\n")
+			msg ="Hello,\nA new item has been found at: "+href+"\nThank you!\n";
+			sub='CRG:#'+title+" "+price
+			mylib.sendMail(email,sub,msg)
+	#print ('Success'+proxy)
+
+
+
+
+
 with open('/home/hamidreza/web-dev/craigslist/found.txt','r') as f:
 	found = [x.strip() for x in f.readlines()]
 with open('/home/hamidreza/web-dev/craigslist/verified_proxies.txt','r') as f:
 	proxies= [x.strip() for x in f.readlines()]
-
 if (len(proxies)<15):
 	sys.exit('Error number of proxies is small!')
 
@@ -62,28 +85,16 @@ with open('/home/hamidreza/web-dev/craigslist/requests.txt','r') as f:
 		timeout=20
 
 		try:
-			#rsp = requests.get(url,headers={"content-type":"text"},proxies={'http': 'http://' + proxy}, timeout=timeout)
-			rsp = requests.get(url,headers={"content-type":"text"},proxies={'http': 'http://' + proxy,'https': 'https://' + proxy}, timeout=timeout)
-			#rsp = requests.get(url,headers={"content-type":"text"},proxies={'http': 'http://' + proxy} )
-			#rsp = requests.get(url,proxies={'http': 'http://' + proxy}, timeout=timeout)
-			html = bs4(rsp.text, 'html.parser')
-			entries= html.find_all('p', attrs={'class': 'row'})
-			for entry in entries:
-				price,time,title,id,href = parse(entry)
-				if (href == ''):
-					continue
-				if (id+':'+time not in found):
-					print ('New found '+id)
-					with open("/home/hamidreza/web-dev/craigslist/found.txt", "a") as myfile:
-					    myfile.write(id+':'+time+"\n")
-					msg ="Hello,\nA new item has been found at: "+href+"\nThank you!\n";
-					sub='CRG:#'+title+" "+price
-					mylib.sendMail(email,sub,msg)
-			#print ('Success'+proxy)
-
+			query(url,proxy,email,timeout)
 		except:
-			1;
-			#print ('Exception occured! '+proxy)
-			continue
-
+			try:
+				proxy =random.choice(proxies)
+				query(url,proxy,email,timeout)
+			except:
+				try:
+					proxy =random.choice(proxies)
+					query(url,proxy,email,timeout)
+				except:
+					#print ('Exception occured! '+proxy)
+					continue
 
